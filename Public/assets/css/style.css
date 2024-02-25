@@ -888,7 +888,7 @@ Navbar Area Two CSS
   z-index: 999;
   -webkit-box-shadow: -8px 20px 28px 0 rgba(255, 255, 255, 0.06);
           box-shadow: -8px 20px 28px 0 rgba(255, 255, 255, 0.06);
-  background: #150346  !important;
+  background: #928ba0  !important;
   -webkit-animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
           animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
   -webkit-transition: 0.5s;
@@ -3088,7 +3088,7 @@ Marketing Home Area CSS
 .marketing-home-area .hero-content .marketing-btn .marketing-btn-one {
   display: inline-block;
   color: #ffffff;
-  background-color: #ff8b00;
+  background-color: #06418f;
   padding: 14px 25px;
   font-size: 16px;
   font-weight: 400;
@@ -3099,7 +3099,7 @@ Marketing Home Area CSS
 
 .marketing-home-area .hero-content .marketing-btn .marketing-btn-one:hover {
   background-color: #ffffff;
-  color: #ff8b00;
+  color: #06418f;
 }
 
 .marketing-home-area .hero-content .marketing-btn .video-btn {
@@ -3334,7 +3334,7 @@ What We Do Section CSS
 
 .we-do-content-area span {
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   text-transform: capitalize;
 }
@@ -3356,19 +3356,19 @@ What We Do Section CSS
 .we-do-content-area .we-btn .we-btn-one {
   display: inline-block;
   color: #ffffff;
-  background-color: #ff8b00;
+  background-color: #06418f;
   padding: 14px 25px;
   font-size: 16px;
   font-weight: 400;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   border-radius: 3px;
-  border: 1px solid #ff8b00;
+  border: 1px solid #06418f;
 }
 
 .we-do-content-area .we-btn .we-btn-one:hover {
   background-color: #ffffff;
-  color: #ff8b00;
+  color: #06418f;
 }
 
 /*================================================
@@ -3403,7 +3403,7 @@ Achieved Section CSS
 .achieved-section .achieved-title span {
   display: block;
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   margin-top: -5px;
   text-transform: capitalize;
@@ -3468,7 +3468,7 @@ History Section CSS
 
 .history-content-area span {
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   display: block;
   margin-top: -5px;
@@ -3493,19 +3493,19 @@ History Section CSS
 .history-content-area .history-btn .history-btn-one {
   display: inline-block;
   color: #ffffff;
-  background-color: #ff8b00;
+  background-color: #06418f;
   padding: 14px 25px;
   font-size: 16px;
   font-weight: 400;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   border-radius: 3px;
-  border: 1px solid #ff8b00;
+  border: 1px solid #06418f;
 }
 
 .history-content-area .history-btn .history-btn-one:hover {
   background-color: #ffffff;
-  color: #ff8b00;
+  color: #06418f;
 }
 
 /*================================================
@@ -3524,7 +3524,7 @@ Performance Section CSS
 .performance-title span {
   display: block;
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   margin-top: -5px;
 }
@@ -3611,7 +3611,7 @@ Productive Section CSS
 .productive-title span {
   display: block;
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   margin-top: -5px;
   text-transform: capitalize;
@@ -3671,7 +3671,7 @@ Needs Section CSS
 
 .needs-area-content span {
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   display: block;
   margin-top: -5px;
@@ -3706,7 +3706,7 @@ Needs Section CSS
   width: 30px;
   left: 0;
   top: 16px;
-  background-color: #ff8b00;
+  background-color: #06418f;
 }
 
 .needs-area-content .needs-btn {
@@ -3716,19 +3716,19 @@ Needs Section CSS
 .needs-area-content .needs-btn .needs-btn-one {
   display: inline-block;
   color: #ffffff;
-  background-color: #ff8b00;
+  background-color: #06418f;
   padding: 12px 25px;
   font-size: 16px;
   font-weight: 400;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   border-radius: 3px;
-  border: 1px solid #ff8b00;
+  border: 1px solid #06418f;
 }
 
 .needs-area-content .needs-btn .needs-btn-one:hover {
   background-color: #ffffff;
-  color: #ff8b00;
+  color: #06418f;
 }
 
 /*================================================
@@ -3745,7 +3745,7 @@ Project Section CSS
 
 .project-title span {
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   display: block;
   margin-top: -5px;
@@ -3767,19 +3767,19 @@ Project Section CSS
 .project-title .project-btn .project-btn-one {
   display: inline-block;
   color: #ffffff;
-  background-color: #ff8b00;
+  background-color: #06418f;
   padding: 12px 25px;
   font-size: 16px;
   font-weight: 400;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   border-radius: 3px;
-  border: 1px solid #ff8b00;
+  border: 1px solid #06418f;
 }
 
 .project-title .project-btn .project-btn-one:hover {
   background-color: #ffffff;
-  color: #ff8b00;
+  color: #06418f;
 }
 
 .single-project-item {
@@ -3810,7 +3810,7 @@ Project Section CSS
   right: 0;
   bottom: 0;
   margin: 5px;
-  background-color: #ff8b00;
+  background-color: #06418f;
   z-index: -1;
   border-radius: 2px;
 }
@@ -3967,7 +3967,7 @@ Faq Section CSS
 
 .faq-title span {
   font-size: 16px;
-  color: #ff8b00;
+  color: #06418f;
   font-weight: 400;
   display: block;
   margin-top: -5px;
@@ -5304,7 +5304,7 @@ SEO Agency Home Area CSS
 .seo-agency-home-area .hero-content .seo-btn .seo-btn-one {
   display: inline-block;
   color: #ffffff;
-  background-color: #ff8b00;
+  background-color: #06418f;
   padding: 14px 25px;
   font-size: 16px;
   font-weight: 400;
@@ -5315,7 +5315,7 @@ SEO Agency Home Area CSS
 
 .seo-agency-home-area .hero-content .seo-btn .seo-btn-one:hover {
   background-color: #ffffff;
-  color: #ff8b00;
+  color: #06418f;
 }
 
 .seo-agency-home-area .hero-content .seo-btn .video-btn {
