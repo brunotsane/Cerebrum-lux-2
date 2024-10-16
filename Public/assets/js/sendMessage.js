@@ -4,19 +4,21 @@ document.getElementById('submit').addEventListener('click', function(event) {
     console.log("OK");
     let name = document.getElementById('name');
     let email = document.getElementById('email');
+    let phone = document.getElementById('phone');
     let subject = document.getElementById('subject');
     let message = document.getElementById('message');
     
     // You can add logic here to send this data to the server or process it further
-    sendEmailToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim());
+    sendEmailToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim(), phone.value.trim());
 });
 
-function sendEmailToServer(name,email,subject, message) {
+function sendEmailToServer(name,email,subject, message, phone) {
 
     const data = {
         name: name,
         email:email,
         message: message,
+        phone: phone,
         subject:subject,
     }
     fetch('/send', {
@@ -29,9 +31,6 @@ function sendEmailToServer(name,email,subject, message) {
     .then(response => response.json())
     .catch(error => {
         console.error('Error:', error);
-        // Optionally display an error message in the chatbox
-        //displayMessage('Error getting response', false);
-        //hideTypingIndicator();
     });
     fetch('/recieve', {
         method: 'POST',
@@ -43,8 +42,5 @@ function sendEmailToServer(name,email,subject, message) {
     .then(response => response.json())
     .catch(error => {
         console.error('Error:', error);
-        // Optionally display an error message in the chatbox
-        //displayMessage('Error getting response', false);
-        //hideTypingIndicator();
     });
 }

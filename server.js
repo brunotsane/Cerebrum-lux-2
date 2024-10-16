@@ -191,14 +191,15 @@ app.post('/recieve', (req, res) =>{
 
         // Replace with your email service details and credentials
     const transporter = nodemailer.createTransport({
-        host: 'smtp.office365.com', // Outlook SMTP server
-        port: 587, // Port for TLS
-        secure: false, // Use TLS
+        service: 'gmail',
         auth: {
-            user: APIKEY.EMAIL_USER,
-            pass: APIKEY.EMAIL_PASS
-        },
-    });
+                user: APIKEY.EMAIL_USER,
+                pass: APIKEY.EMAIL_PASS
+            },
+            tls:{
+                rejectUnauthorized: false
+            }
+        });
 
     const mailOptions = {
         from: '"Cerebrum Lux" <support@cerebrumlux.com>',
@@ -219,4 +220,4 @@ app.post('/recieve', (req, res) =>{
 
 // Start server
 // Démarrage du serveur
-app.listen(APIKEY.PORT);
+app.listen(3000);
