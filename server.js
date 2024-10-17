@@ -182,9 +182,6 @@ app.post('/recieve', (req, res) =>{
                 <p>${req.body.message}<p/>
                 <p>Admin Team<br>Cerebrum Lux Inc.</p>
             </div>
-            <div class="footer">
-                <p>This is an automated message. Please do not reply directly to this email.</p>
-            </div>
         </div>
     </body>
     </html>`;
