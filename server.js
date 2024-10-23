@@ -11,6 +11,10 @@ app.use(express.static('Public'));
 
 let APIKEY = process.env;
 
+// Catch 404 and forward to error handler
+app.use((req, res, next) => {
+    res.status(404).redirect('/error-404.html'); // Redirect to your custom 404 page
+  });
 app.post('/chat', async (req, res) => {
     // Send request to OpenAI API
     // Handle response and send back to frontend
@@ -202,6 +206,93 @@ app.post('/recieve', (req, res) =>{
         from: '"Cerebrum Lux" <support@cerebrumlux.com>',
         to: APIKEY.EMAIL_USER,
         subject: req.body.message,
+        html: output
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.sendStatus(200);
+        }
+    });
+});
+
+app.post('/recieveRequest', (req, res) =>{
+    const output = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Cerebrum Lux</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 30px auto;
+                background: #fff;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                background: #086ad8;
+                color: #ffffff;
+                padding: 10px 20px;
+                text-align: center;
+            }
+            .body {
+                padding: 20px;
+                line-height: 1.6;
+                color: #555555;
+            }
+            .footer {
+                text-align: center;
+                padding: 20px;
+                font-size: 12px;
+                color: #999;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h2>Contact Info</h2>
+            </div>
+            <div class="body">
+                <p>New contact</p>
+                <p><strong>Name:</strong> ${req.body.name}</p>
+                <p><strong>Email:</strong> ${req.body.email}</p>
+                <p><strong>Phone:</strong> ${req.body.phone}</p>
+                 <p><strong>Time:</strong> ${req.body.call}</p>
+                <p>==== Message =====</p>
+                <p>${req.body.message}<p/>
+                <p>Admin Team<br>Cerebrum Lux Inc.</p>
+            </div>
+        </div>
+    </body>
+    </html>`;
+
+        // Replace with your email service details and credentials
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+                user: APIKEY.EMAIL_USER,
+                pass: APIKEY.EMAIL_PASS
+            },
+            tls:{
+                rejectUnauthorized: false
+            }
+        });
+
+    const mailOptions = {
+        from: '"Cerebrum Lux" <support@cerebrumlux.com>',
+        to: APIKEY.EMAIL_USER,
+        subject: "Inquiry For " + req.body.subject,
         html: output
     };
 

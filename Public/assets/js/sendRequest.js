@@ -1,18 +1,19 @@
 
-document.getElementById('submit').addEventListener('click', function(event) {
+document.getElementById('requestForm').addEventListener('click', function(event) {
    
-    let name = document.getElementById('name');
-    let email = document.getElementById('email');
-    let phone = document.getElementById('phone');
-    let subject = document.getElementById('subject');
-    let message = document.getElementById('message');
+
+    let name = document.getElementById('name2');
+    let email = document.getElementById('email2');
+    let phone = document.getElementById('phone2');
+    let subject = document.getElementById('services');
+    let message = document.getElementById('message2');
+    let timeCall = document.getElementById('timeCall');
     
     // You can add logic here to send this data to the server or process it further
-    sendEmailToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim(), phone.value.trim());
+    recieveRequestToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim(), phone.value.trim(), timeCall.value.trim());
 });
 
-
-function sendEmailToServer(name,email,subject, message, phone) {
+function recieveRequestToServer(name,email,subject, message, phone, timeToCall) {
 
     const data = {
         name: name,
@@ -20,8 +21,9 @@ function sendEmailToServer(name,email,subject, message, phone) {
         message: message,
         phone: phone,
         subject:subject,
+        call: timeToCall
     }
-    fetch('/send', {
+    fetch('/recieveRequest', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -34,6 +36,8 @@ function sendEmailToServer(name,email,subject, message, phone) {
     });
     recieveEmail(data);
    
+}
+
 function recieveEmail(data){
     fetch('/recieve', {
         method: 'POST',
