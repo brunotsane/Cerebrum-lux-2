@@ -96,7 +96,7 @@ app.post('/send', (req, res) =>{
                 We look forward to assisting you and serving your needs.</p>
                 <p></p>
                 <p>Best regards,</p>
-                <p>Admin Team<br>Marketing Company<br>Cerebrum Lux Inc. </p>
+                <p>Admin Team<br>Tech Company<br>Cerebrum Lux Inc. </p>
             </div>
             <div class="footer">
                 <p>This is an automated message. Please do not reply directly to this email.</p>

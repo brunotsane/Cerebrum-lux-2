@@ -34,7 +34,17 @@ function recieveRequestToServer(name,email,subject, message, phone, timeToCall) 
     .catch(error => {
         console.error('Error:', error);
     });
-    recieveEmail(data);
+    fetch('/send', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .catch(error => {
+        console.error('Error:', error);
+    });
    
 }
 
