@@ -105,14 +105,14 @@ $(document).ready(function(){
 		}
 	});
 	let message = document.getElementById('selectedPckage');
-	document.getElementById("basicSignup_1").addEventListener('click', function(){
+	document.getElementById("basicSignup_1").addEventListener('click', function(event){
 		selectPck("Portfolio", TotalBasic);
 
 	})
-	document.getElementById("standardSignup_1").addEventListener('click', function(){
+	document.getElementById("standardSignup_1").addEventListener('click', function(event){
 		selectPck("Standard", TotalStanderd);
 	})
-	document.getElementById("premiumSignup_1").addEventListener('click', function(){
+	document.getElementById("premiumSignup_1").addEventListener('click', function(event){
 		selectPck("Enterprise", TotalPremium);
 	})
 
