@@ -1,0 +1,208 @@
+/* Switcher CSS File 
+    ===================
+    Template Name: selector - pricing tables and plans
+    Author: Ashish Maraviya
+    Version: 2.0
+    Copyright 2020
+===================*/
+@-webkit-keyframes "selector-rotate" {
+  0% {
+    -webkit-transform: perspective(2000px) rotateY(0); }
+  70% {
+    /* this creates the bounce effect */
+    -webkit-transform: perspective(2000px) rotateY(200deg); }
+  100% {
+    -webkit-transform: perspective(2000px) rotateY(180deg); } }
+@-moz-keyframes "selector-rotate" {
+  0% {
+    -moz-transform: perspective(2000px) rotateY(0); }
+  70% {
+    /* this creates the bounce effect */
+    -moz-transform: perspective(2000px) rotateY(200deg); }
+  100% {
+    -moz-transform: perspective(2000px) rotateY(180deg); } }
+@keyframes "selector-rotate" {
+  0% {
+    -webkit-transform: perspective(2000px) rotateY(0);
+    -moz-transform: perspective(2000px) rotateY(0);
+    -ms-transform: perspective(2000px) rotateY(0);
+    -o-transform: perspective(2000px) rotateY(0);
+    transform: perspective(2000px) rotateY(0); }
+  70% {
+    /* this creates the bounce effect */
+    -webkit-transform: perspective(2000px) rotateY(200deg);
+    -moz-transform: perspective(2000px) rotateY(200deg);
+    -ms-transform: perspective(2000px) rotateY(200deg);
+    -o-transform: perspective(2000px) rotateY(200deg);
+    transform: perspective(2000px) rotateY(200deg); }
+  100% {
+    -webkit-transform: perspective(2000px) rotateY(180deg);
+    -moz-transform: perspective(2000px) rotateY(180deg);
+    -ms-transform: perspective(2000px) rotateY(180deg);
+    -o-transform: perspective(2000px) rotateY(180deg);
+    transform: perspective(2000px) rotateY(180deg); } }
+@-webkit-keyframes "selector-rotate-inverse" {
+  0% {
+    -webkit-transform: perspective(2000px) rotateY(-180deg); }
+  70% {
+    /* this creates the bounce effect */
+    -webkit-transform: perspective(2000px) rotateY(20deg); }
+  100% {
+    -webkit-transform: perspective(2000px) rotateY(0); } }
+@-moz-keyframes "selector-rotate-inverse" {
+  0% {
+    -moz-transform: perspective(2000px) rotateY(-180deg); }
+  70% {
+    /* this creates the bounce effect */
+    -moz-transform: perspective(2000px) rotateY(20deg); }
+  100% {
+    -moz-transform: perspective(2000px) rotateY(0); } }
+@keyframes "selector-rotate-inverse" {
+  0% {
+    -webkit-transform: perspective(2000px) rotateY(-180deg);
+    -moz-transform: perspective(2000px) rotateY(-180deg);
+    -ms-transform: perspective(2000px) rotateY(-180deg);
+    -o-transform: perspective(2000px) rotateY(-180deg);
+    transform: perspective(2000px) rotateY(-180deg); }
+  70% {
+    /* this creates the bounce effect */
+    -webkit-transform: perspective(2000px) rotateY(20deg);
+    -moz-transform: perspective(2000px) rotateY(20deg);
+    -ms-transform: perspective(2000px) rotateY(20deg);
+    -o-transform: perspective(2000px) rotateY(20deg);
+    transform: perspective(2000px) rotateY(20deg); }
+  100% {
+    -webkit-transform: perspective(2000px) rotateY(0);
+    -moz-transform: perspective(2000px) rotateY(0);
+    -ms-transform: perspective(2000px) rotateY(0);
+    -o-transform: perspective(2000px) rotateY(0);
+    transform: perspective(2000px) rotateY(0); } }
+/*# sourceMappingURL=switcher.css.map */
+.selector-default {
+  margin-bottom: 15px;
+  text-align: center;
+  letter-spacing: 1px;
+  font-family: 'Lato', sans-serif;
+  background: #fff; }
+  .selector-default hr {
+    margin-top: 0px;
+    margin-bottom: 0px; }
+
+.m-auto {
+  margin: auto !important; }
+
+.selector-switcher {
+  text-align: center; }
+  .selector-switcher .selector-switch {
+    background: linear-gradient(135deg, #fa2b7f, #fb6a44);
+    border: 1px solid #fff;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: 40px;
+    width: 90px;
+    border-radius: 50em;
+    -webkit-transition: -webkit-transform 0.5s;
+    -moz-transition: -moz-transform 0.5s;
+    transition: transform 0.5s; }
+  .selector-switcher .selector-field {
+    margin-bottom: 30px;
+    display: inline-block;
+    position: relative;
+    padding: 2px;
+    background: radial-gradient(#b76cd2, #4c3bb3);
+    border-radius: 50em; }
+  .selector-switcher input[type="radio"] {
+    position: absolute;
+    opacity: 0; }
+    .selector-switcher input[type="radio"]:checked + label + .selector-switch {
+      -webkit-transform: translateX(90px);
+      -moz-transform: translateX(90px);
+      -ms-transform: translateX(90px);
+      -o-transform: translateX(90px);
+      transform: translateX(90px); }
+    .selector-switcher input[type="radio"]:checked + label:nth-of-type(n) + .selector-switch {
+      -webkit-transform: translateX(90px);
+      -moz-transform: translateX(90px);
+      -ms-transform: translateX(90px);
+      -o-transform: translateX(90px);
+      transform: translateX(90px); }
+  .selector-switcher label {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    float: left;
+    width: 90px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+    font-size: 17px;
+    color: #FFFFFF;
+    margin-bottom: 0; }
+
+.selector-wrapper {
+  position: relative;
+  padding-left: 0;
+  margin-bottom: 0;
+  border-radius: 30px; }
+  .selector-wrapper > li {
+    list-style-type: none;
+    background-color: #FFFFFF;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    outline: 1px solid transparent; }
+    .selector-wrapper > li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      pointer-events: none;
+      background: -webkit-linear-gradient(right, #FFFFFF, rgba(255, 255, 255, 0));
+      background: linear-gradient(to left, #FFFFFF, rgba(255, 255, 255, 0)); }
+  .selector-wrapper > li.is-ended::after {
+    display: none; }
+  .selector-wrapper .is-visible {
+    position: relative;
+    border-radius: 30px;
+    z-index: 5; }
+  .selector-wrapper .is-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    border-radius: 30px;
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    transform: rotateY(180deg); }
+  .selector-wrapper .is-selected {
+    z-index: 3 !important; }
+
+.selector-wrapper.is-switched .is-visible {
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  border-radius: 30px;
+  -webkit-animation: selector-rotate 0.5s;
+  -moz-animation: selector-rotate 0.5s;
+  animation: selector-rotate 0.5s; }
+.selector-wrapper.is-switched .is-hidden {
+  -webkit-transform: rotateY(0);
+  -moz-transform: rotateY(0);
+  -ms-transform: rotateY(0);
+  -o-transform: rotateY(0);
+  transform: rotateY(0);
+  -webkit-animation: selector-rotate-inverse 0.5s;
+  -moz-animation: selector-rotate-inverse 0.5s;
+  animation: selector-rotate-inverse 0.5s;
+  opacity: 0; }
+.selector-wrapper.is-switched .is-selected {
+  opacity: 1; }
+
+/*# sourceMappingURL=switcher.css.map */
