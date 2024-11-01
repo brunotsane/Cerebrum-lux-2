@@ -1,65 +1,57 @@
-
 document.getElementById('requestForm').addEventListener('click', function(event) {
-   
+    event.preventDefault();
 
-    let name = document.getElementById('name2');
-    let email = document.getElementById('email2');
-    let phone = document.getElementById('phone2');
-    let subject = document.getElementById('services');
-    let message = document.getElementById('message2');
-    let package = document.getElementById('selectedPckage');
-    let timeCall = document.getElementById('timeCall');
-    
-    // You can add logic here to send this data to the server or process it further
-    recieveRequestToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim(), phone.value.trim(), timeCall.value.trim(), package.innerText);
+    const name = document.getElementById('name2').value.trim();
+    const email = document.getElementById('email2').value.trim();
+    const phone = document.getElementById('phone2').value.trim();
+    const subject = document.getElementById('services').value.trim();
+    const message = document.getElementById('message2').value.trim();
+    const packageText = document.getElementById('selectedPackage').value;
+    const timeToCall = document.getElementById('timeCall').value.trim();
+
+    // Basic validation check
+    if (!name || !email || !phone || !subject || !message) {
+        console.error("All fields are required.");
+        return;
+    }
+
+    // Sending the form data
+    sendRequestToServer({
+        name,
+        email,
+        phone,
+        subject,
+        message,
+        package: packageText,
+        callTime: timeToCall
+    });
 });
 
-function recieveRequestToServer(name,email,subject, message, phone, timeToCall, package) {
+function sendRequestToServer(data) {
+    const urls = ['/receiveRequest', '/send'];
 
-    const data = {
-        name: name,
-        email:email,
-        message: message,
-        phone: phone,
-        package: package,
-        subject:subject,
-        call: timeToCall
-    }
-    fetch('/recieveRequest', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .catch(error => {
-        console.error('Error:', error);
-    });
-    fetch('/send', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .catch(error => {
-        console.error('Error:', error);
-    });
-   
-}
-
-function recieveEmail(data){
-    fetch('/recieve', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .catch(error => {
-        console.error('Error:', error);
+    urls.forEach(url => {
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            // Check if the response is JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return response.json();
+            } else {
+                throw new Error('Expected JSON response');
+            }
+        })
+        .then(data => {
+            console.log(`Success on ${url}:`, data);
+        })
+        .catch(error => {
+            console.error(`Error on ${url}:`, error);
+        });
     });
 }

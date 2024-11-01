@@ -104,7 +104,7 @@ $(document).ready(function(){
 			$('#premiumSignup_1').bind('click', false);
 		}
 	});
-	let message = document.getElementById('selectedPckage');
+	let message = document.getElementById('selectedPackage');
 	document.getElementById("basicSignup_1").addEventListener('click', function(){
 		selectPck("Portfolio", TotalBasic);
 
@@ -119,5 +119,6 @@ $(document).ready(function(){
 	function selectPck(packageName, price){
 		message.style.visibility = "visible";
 		message.innerHTML = "<span> Selected Package: </span> <span style='font-weight: bold; color: #06418f;'> "+packageName+" </span> " + "<span> | Price: </span>" + "<span style='color: #06418f; font-weight: bold;'> $"+price+"</span>";
+		message.value = message.innerText;
 	}
 });

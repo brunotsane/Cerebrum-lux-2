@@ -1,26 +1,21 @@
-
 document.getElementById('submit').addEventListener('click', function(event) {
-   
-    let name = document.getElementById('name');
-    let email = document.getElementById('email');
-    let phone = document.getElementById('phone');
-    let subject = document.getElementById('subject');
-    let message = document.getElementById('message');
-    
-    // You can add logic here to send this data to the server or process it further
-    sendEmailToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim(), phone.value.trim());
+    event.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !phone || !subject || !message) {
+        console.error("All fields are required.");
+        return;
+    }
+
+    sendEmailToServer({ name, email, phone, subject, message });
 });
 
-
-function sendEmailToServer(name,email,subject, message, phone) {
-
-    const data = {
-        name: name,
-        email:email,
-        message: message,
-        phone: phone,
-        subject:subject,
-    }
+function sendEmailToServer(data) {
     fetch('/send', {
         method: 'POST',
         headers: {
@@ -28,22 +23,40 @@ function sendEmailToServer(name,email,subject, message, phone) {
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Email sent successfully:', data);
+    })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error sending email:', error);
     });
-    recieveEmail(data);
-   
-function recieveEmail(data){
-    fetch('/recieve', {
+
+    receiveEmail(data);
+}
+
+function receiveEmail(data) {
+    fetch('/receive', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Email received successfully:', data);
+    })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error receiving email:', error);
     });
-}}
+}
