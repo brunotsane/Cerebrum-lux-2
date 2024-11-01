@@ -1,5 +1,4 @@
 document.getElementById('requestForm').addEventListener('click', function(event) {
-    event.preventDefault();
 
     const name = document.getElementById('name2').value.trim();
     const email = document.getElementById('email2').value.trim();
@@ -7,7 +6,7 @@ document.getElementById('requestForm').addEventListener('click', function(event)
     const subject = document.getElementById('services').value.trim();
     const message = document.getElementById('message2').value.trim();
     const packageText = document.getElementById('selectedPackage').value;
-    const timeToCall = document.getElementById('timeCall').value.trim();
+    const timeToCall = document.getElementById('timeCall').value;
 
     // Basic validation check
     if (!name || !email || !phone || !subject || !message) {
