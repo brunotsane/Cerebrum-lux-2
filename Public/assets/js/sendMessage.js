@@ -46,4 +46,4 @@ function recieveEmail(data){
     .catch(error => {
         console.error('Error:', error);
     });
-}
+}}
