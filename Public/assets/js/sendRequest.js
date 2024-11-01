@@ -7,21 +7,19 @@ document.getElementById('requestForm').addEventListener('click', function(event)
     let phone = document.getElementById('phone2');
     let subject = document.getElementById('services');
     let message = document.getElementById('message2');
-    let package = document.getElementById('selectedPckage');
     let timeCall = document.getElementById('timeCall');
     
     // You can add logic here to send this data to the server or process it further
-    recieveRequestToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim(), phone.value.trim(), timeCall.value.trim(), package.innerText);
+    recieveRequestToServer(name.value.trim(),email.value.trim(),subject.value.trim(), message.value.trim(), phone.value.trim(), timeCall.value.trim());
 });
 
-function recieveRequestToServer(name,email,subject, message, phone, timeToCall, package) {
+function recieveRequestToServer(name,email,subject, message, phone, timeToCall) {
 
     const data = {
         name: name,
         email:email,
         message: message,
         phone: phone,
-        package: package,
         subject:subject,
         call: timeToCall
     }

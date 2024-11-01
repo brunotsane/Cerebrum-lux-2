@@ -268,8 +268,7 @@ app.post('/recieveRequest', (req, res) =>{
                 <p><strong>Name:</strong> ${req.body.name}</p>
                 <p><strong>Email:</strong> ${req.body.email}</p>
                 <p><strong>Phone:</strong> ${req.body.phone}</p>
-                <p><strong>Package:</strong> ${req.body.package}</p>
-                <p><strong>Time:</strong> ${req.body.call}</p>
+                 <p><strong>Time:</strong> ${req.body.call}</p>
                 <p>==== Message =====</p>
                 <p>${req.body.message}<p/>
                 <p>Admin Team<br>Cerebrum Lux Inc.</p>
