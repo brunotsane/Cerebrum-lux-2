@@ -21,8 +21,8 @@ app.post('/create-checkout-session', async (req, res) => {
     const { name, email, packOption } = req.body;
 
     const prices = {
-        pro: 30000,    // $300 in cents
-        starter: 20000 // $200 in cents
+        pro: 35000,    // $300 in cents
+        starter: 25000 // $200 in cents
     };
 
     try {
@@ -32,7 +32,7 @@ app.post('/create-checkout-session', async (req, res) => {
             line_items: [
                 {
                     price_data: {
-                        currency: 'usd',
+                        currency: 'cad',
                         product_data: {
                             name: packOption === 'pro' ? 'Pro Package' : 'Starter Package',
                         },
