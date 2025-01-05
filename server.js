@@ -1,6 +1,8 @@
 import express, { json } from 'express';
 import 'dotenv/config';
 import cors from 'cors';
+import Stripe from 'stripe';
+import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
 
 const app = express();
@@ -8,7 +10,92 @@ app.use(cors());
 app.use(json());
 app.use(express.static('Public'));
 
-const { EMAIL_USER, EMAIL_PASS, PORT } = process.env;
+const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET } = process.env;
+const stripe = new Stripe(STRIPE_SECRET);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Handle Stripe Checkout
+app.post('/create-checkout-session', async (req, res) => {
+    const { name, email, packOption } = req.body;
+
+    const prices = {
+        pro: 30000,    // $300 in cents
+        starter: 20000 // $200 in cents
+    };
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            customer_email: email,
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: packOption === 'pro' ? 'Pro Package' : 'Starter Package',
+                        },
+                        unit_amount: prices[packOption],
+                    },
+                    quantity: 1,
+                },
+            ],
+            mode: 'payment',
+            success_url: 'https://www.cerebrumlux.com/success.html',
+            cancel_url: 'https://www.cerebrumlux.com/cancel.html',
+        });
+
+        // Send Confirmation Email
+        await sendConfirmationEmail(name, email, packOption);
+
+        res.redirect(303, session.url);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Function to Send Confirmation Email
+const sendConfirmationEmail = async (name, email, packageType) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: EMAIL_USER,
+            pass: EMAIL_PASS,
+        },
+    });
+
+    const mailOptions = {
+        from: '"Cerebrum Lux Inc." <support@cerebrumlux.com>',
+        to: email,
+        subject: 'Registration Confirmation',
+        html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; color: #333; }
+                .container { max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+                h2 { color: #06418f; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>Thank You for Registering!</h2>
+                <p>Hi ${name},</p>
+                <p>You have successfully registered for the <strong>${packageType === 'pro' ? 'Pro Package' : 'Starter Package'}</strong> web development camp.</p>
+                <p>We are excited to have you join us!</p>
+                <p>If you have any questions, feel free to contact us.</p>
+                <p>Best regards,</p>
+                <p>The Cerebrum Lux Team</p>
+            </div>
+        </body>
+        </html>
+        `,
+    };
+
+    await transporter.sendMail(mailOptions);
+};
 
 // Create the Nodemailer transporter
 const transporter = nodemailer.createTransport({
