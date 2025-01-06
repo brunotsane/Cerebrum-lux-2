@@ -60,7 +60,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
 
 // Webhook Route (uses raw body for Stripe)
-app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+app.post('/webhook', express.json({type: 'application/json'}), async (req, res) => {
     const endpointSecret = WEBHOOK_SECRET;
 
     let event;
