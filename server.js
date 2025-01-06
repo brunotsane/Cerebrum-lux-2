@@ -61,7 +61,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
 
 // Webhook to handle payment success
-app.post('/webhooks', async (req, res) => {
+app.post('/webhook', async (req, res) => {
     const endpointSecret = WEBHOOK_SECRET;
 
     let event;
