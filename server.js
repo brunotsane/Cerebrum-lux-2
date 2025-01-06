@@ -43,8 +43,8 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: 'https://cerebrumlux.com/success.html',
-            cancel_url: 'https://cerebrumlux.com/cancel.html',
+            success_url: 'https://www.cerebrumlux.com/success.html',
+            cancel_url: 'https://www.cerebrumlux.com/cancel.html',
             metadata: {
                 packageName: packOption === 'pro' ? 'Pro Package' : 'Starter Package',
                 campOption: campOption,
