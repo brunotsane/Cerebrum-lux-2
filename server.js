@@ -8,6 +8,7 @@ import nodemailer from 'nodemailer';
 const app = express();
 app.use(cors());
 app.use(json());
+app.use(express.json());
 app.use(express.static('Public'));
 
 const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET } = process.env;
