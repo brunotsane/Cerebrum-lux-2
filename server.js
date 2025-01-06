@@ -23,7 +23,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
     const prices = {
         pro: 35000, // $300 in cents
-        starter: 2500, // $200 in cents
+        starter: 25000, // $200 in cents
     };
 
     try {
@@ -52,6 +52,7 @@ app.post('/create-checkout-session', async (req, res) => {
             },
         });
 
+        await sendRegistrationEmail(name, email, packOption, campOption, comments);
         res.redirect(303, session.url);
     } catch (error) {
         console.error('Error creating checkout session:', error);
