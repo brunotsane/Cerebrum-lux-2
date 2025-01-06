@@ -23,7 +23,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
     const prices = {
         pro: 35000, // $300 in cents
-        starter: 25000, // $200 in cents
+        starter: 2500, // $200 in cents
     };
 
     try {
