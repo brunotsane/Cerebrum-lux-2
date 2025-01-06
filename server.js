@@ -14,7 +14,6 @@ const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET } = process.
 const stripe = new Stripe(STRIPE_SECRET);
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(bodyParser.json());
 
 // Handle Stripe Checkout
@@ -60,8 +59,8 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 
-// Webhook to handle payment success
-app.post('/webhook', async (req, res) => {
+// Webhook Route (uses raw body for Stripe)
+app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const endpointSecret = WEBHOOK_SECRET;
 
     let event;
@@ -88,9 +87,10 @@ app.post('/webhook', async (req, res) => {
         await sendRegistrationEmail(customerName, customerEmail, packageName, campOption, comments);
     }
 
-    // Return a response to acknowledge receipt of the event
+    // Respond to Stripe to acknowledge receipt of the event
     res.status(200).json({ received: true });
 });
+
 
 // Function to Send Confirmation Email
 const sendConfirmationEmail = async (name, email, packageType) => {
