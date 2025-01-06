@@ -10,19 +10,20 @@ app.use(cors());
 app.use(json());
 app.use(express.static('Public'));
 
-const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET } = process.env;
+const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET } = process.env;
 const stripe = new Stripe(STRIPE_SECRET);
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/webhook', express.raw({ type: 'application/json' }));
 app.use(bodyParser.json());
 
 // Handle Stripe Checkout
 app.post('/create-checkout-session', async (req, res) => {
-    const { name, email, packOption } = req.body;
+    const { name, email, packOption, campOption, comments } = req.body;
 
     const prices = {
-        pro: 35000,    // $300 in cents
-        starter: 25000 // $200 in cents
+        pro: 35000, // $300 in cents
+        starter: 25000, // $200 in cents
     };
 
     try {
@@ -42,17 +43,53 @@ app.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: 'https://www.cerebrumlux.com/success.html',
-            cancel_url: 'https://www.cerebrumlux.com/cancel.html',
+            success_url: 'https://cerebrumlux.com/success.html',
+            cancel_url: 'https://cerebrumlux.com/cancel.html',
+            metadata: {
+                packageName: packOption === 'pro' ? 'Pro Package' : 'Starter Package',
+                campOption: campOption,
+                comments: comments || 'None',
+            },
         });
-
-        // Send Confirmation Email
-        await sendConfirmationEmail(name, email, packOption);
 
         res.redirect(303, session.url);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Error creating checkout session:', error);
+        res.status(500).json({ message: 'Failed to create checkout session.' });
     }
+});
+
+
+// Webhook to handle payment success
+app.post('/webhooks', async (req, res) => {
+    const endpointSecret = WEBHOOK_SECRET;
+
+    let event;
+    try {
+        const sig = req.headers['stripe-signature'];
+        event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } catch (err) {
+        console.error('Webhook signature verification failed:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle the event
+    if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+
+        // Extract customer details from the session
+        const customerName = session.customer_details.name;
+        const customerEmail = session.customer_details.email;
+        const packageName = session.metadata.packageName || 'N/A';
+        const campOption = session.metadata.campOption || 'N/A';
+        const comments = session.metadata.comments || 'N/A';
+
+        // Send confirmation email
+        await sendRegistrationEmail(customerName, customerEmail, packageName, campOption, comments);
+    }
+
+    // Return a response to acknowledge receipt of the event
+    res.status(200).json({ received: true });
 });
 
 // Function to Send Confirmation Email
@@ -96,6 +133,41 @@ const sendConfirmationEmail = async (name, email, packageType) => {
 
     await transporter.sendMail(mailOptions);
 };
+
+// Function: Send Registration Email
+const sendRegistrationEmail = async (name, email, packOption, campOption, comments) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: EMAIL_USER, // Replace with your email
+            pass: EMAIL_PASS, // Replace with your email password or app-specific password
+        },
+    });
+
+    const mailOptions = {
+        from: '"Web Dev Camp Registration" <support@cerebrumlux.com>',
+        to: EMAIL_USER, // Replace with your email to receive form data
+        subject: `New Registration: ${name}`,
+        html: `
+            <h2>New Registration Details</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Selected Package:</strong> ${packOption === 'pro' ? 'Pro Package ($300)' : 'Starter Package ($200)'}</p>
+            <p><strong>Camp Option:</strong> ${campOption}</p>
+            <p><strong>Additional Comments:</strong> ${comments || 'None'}</p>
+        `,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Registration email sent to ${email}`);
+        await sendConfirmationEmail(name, email, packOption);
+    } catch (error) {
+        console.error('Error sending registration email:', error);
+    }
+};
+
+// Route to handle form submission
 
 // Create the Nodemailer transporter
 const transporter = nodemailer.createTransport({
