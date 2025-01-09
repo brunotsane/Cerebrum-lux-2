@@ -22,7 +22,7 @@ app.post('/create-checkout-session', async (req, res) => {
     const { name, email, packOption, campOption, comments } = req.body;
 
     const prices = {
-        pro: 35000, // $300 in cents
+        pro: 150000, // $300 in cents
         starter: 25000, // $200 in cents
     };
 
