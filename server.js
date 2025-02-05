@@ -60,6 +60,53 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 });
 
+app.post('/quiz-completed', async (req, res) => {
+    const { name, email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ error: 'Missing name or email' });
+    }
+
+    const mailOptions = {
+        from: '"Cerebrum Lux Inc." <support@cerebrumlux.com>',
+        to: email,
+        subject: '🎉 Congratulations! Enjoy 25% Off Your Next Purchase!',
+        html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; color: #333; background-color: #f4f4f4; padding: 20px; }
+                .container { max-width: 600px; background: #fff; padding: 20px; margin: auto; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }
+                h2 { color: #06418f; text-align: center; }
+                p { font-size: 16px; text-align: center; }
+                .discount { font-size: 20px; font-weight: bold; color: #d9534f; text-align: center; }
+                .btn { display: block; width: 200px; margin: 20px auto; padding: 12px; background: #06418f; color: #fff; text-align: center; text-decoration: none; border-radius: 5px; }
+                .footer { text-align: center; font-size: 12px; color: #999; margin-top: 20px; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>🎉 Congrats, ${name}! You Did It! 🎉</h2>
+                <p>Thanks for completing the quiz! As a reward, enjoy an exclusive <strong>25% discount</strong> on your next purchase.</p>
+                <p class="discount">Use Code: <strong>QUIZ25</strong></p>
+                <a href="https://www.cerebrumlux.com/pricing.html" class="btn">Claim Your Discount</a>
+                <p class="footer">Offer valid for 7 days. Terms and conditions apply.</p>
+            </div>
+        </body>
+        </html>
+        `,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Discount email sent to ${email}`);
+        res.status(200).json({ message: 'Discount email sent successfully!' });
+    } catch (error) {
+        console.error('Error sending discount email:', error);
+        res.status(500).json({ error: 'Failed to send discount email' });
+    }
+});
 
 // Webhook Route (uses raw body for Stripe)
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {

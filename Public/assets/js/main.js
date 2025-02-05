@@ -390,6 +390,88 @@ function toggleTheme() {
         setTheme('theme-dark');
     }
 }
+
+let isFrench = false;
+
+        window.onload = function () {
+            if (!sessionStorage.getItem("quizTaken")) {
+                document.getElementById("quizModal").style.display = "flex";
+            }
+        };
+
+        function closeModal() {
+            document.getElementById("quizModal").style.display = "none";
+            sessionStorage.setItem("quizTaken", "true");
+        }
+
+        function checkAnswers() {
+            const email = document.getElementById("email-q").value;
+            if (!email) {
+                alert(isFrench ? "Veuillez entrer votre email." : "Please enter your email.");
+                return;
+            }
+
+            const answers = { q1: "b", q2: "a", q3: "a", q4: "b", q5: "b" };
+            let score = 0;
+            for (let key in answers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                if (selected && selected.value === answers[key]) {
+                    score++;
+                }
+            }
+
+            document.getElementById("quizQuestions").classList.add("quiz-hidden");
+            document.getElementById("email-q").classList.add("quiz-hidden");
+            document.getElementById("emailLabel").classList.add("quiz-hidden");
+
+            const resultText = document.getElementById("result");
+            const retryButton = document.getElementById("retryButton");
+
+            if (score >= 4) {
+                resultText.innerHTML = isFrench 
+                    ? "🎉 Félicitations ! Vous avez obtenu " + score + "/5. Vous avez droit à une réduction de 25% !" 
+                    : "🎉 Congratulations! You scored " + score + "/5. You are entitled to a 25% discount!";
+                resultText.style.color = "green";
+                sendEmail(email);
+                retryButton.classList.add("quiz-hidden"); 
+            } else {
+                resultText.innerHTML = isFrench 
+                    ? "❌ Vous avez obtenu " + score + "/5. Réessayez !" 
+                    : "❌ You scored " + score + "/5. Try again!";
+                resultText.style.color = "red";
+                retryButton.classList.remove("quiz-hidden"); 
+            }
+            resultText.classList.remove("quiz-hidden");
+        }
+
+        function sendEmail(email) {
+            fetch('/quiz-completed', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: 'WOOW', email: email }),
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+            
+        }
+
+        function retryQuiz() {
+            document.getElementById("quizQuestions").classList.remove("quiz-hidden");
+            document.getElementById("email-q").classList.remove("quiz-hidden");
+            document.getElementById("emailLabel").classList.remove("quiz-hidden");
+            document.getElementById("result").classList.add("quiz-hidden");
+            document.getElementById("retryButton").classList.add("quiz-hidden");
+        }
+
+        function translateForm() {
+            isFrench = !isFrench;
+            document.getElementById("quizTitle").innerText = isFrench ? "Quiz du Mois de l'Histoire des Noirs" : "Black History Month Quiz";
+            document.querySelector(".quiz-button").innerText = isFrench ? "English Version" : "Version Française";
+        }
+
 // Immediately invoked function to set the theme on initial load
 (function () {
     if (localStorage.getItem('exto_theme') === 'theme-dark') {
