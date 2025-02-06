@@ -81,7 +81,7 @@ app.post('/quiz-completed', async (req, res) => {
                 h2 { color: #06418f; text-align: center; }
                 p { font-size: 16px; text-align: center; }
                 .discount { font-size: 20px; font-weight: bold; color: #d9534f; text-align: center; }
-                .btn { display: block; width: 200px; margin: 20px auto; padding: 12px; background: #06418f; color: #fff; text-align: center; text-decoration: none; border-radius: 5px; }
+                .btn { display: block; width: 200px; margin: 20px auto; padding: 12px; background: #06418f; color: #f4f4f4; text-align: center; text-decoration: none; border-radius: 5px; }
                 .footer { text-align: center; font-size: 12px; color: #999; margin-top: 20px; }
             </style>
         </head>
@@ -89,10 +89,25 @@ app.post('/quiz-completed', async (req, res) => {
             <div class="container">
                 <h2>🎉 Congrats, ${name}! You Did It! 🎉</h2>
                 <p>Thanks for completing the quiz! As a reward, enjoy an exclusive <strong>25% discount</strong> on your next purchase.</p>
+                <p>You have been entered into a draw for a free website design!</p>
                 <p class="discount">Use Code: <strong>QUIZ25</strong></p>
                 <a href="https://www.cerebrumlux.com/pricing.html" class="btn">Claim Your Discount</a>
                 <p class="footer">Offer valid for 7 days. Terms and conditions apply.</p>
+                <p>Contact us at +1 (888) 592-7276 if you have any special inquiry </p>
             </div>
+
+            <p>===========================================================================================================================</p>
+
+        <div class="container">
+            <h2>🎉 Félicitations! Vous l'avez fait ! 🎉</h2>
+            <p>Merci d'avoir complété le quiz ! En récompense, profitez d'une <strong>réduction exclusive de 25%</strong> sur votre prochain achat.</p>
+            <p>Vous avez été inscrit à un tirage au sort pour un design de site web gratuit !</p>
+            <p class="discount">Utilisez le code : <strong>QUIZ25</strong></p>
+            <a href="https://www.cerebrumlux.com/pricing.html" class="btn">Réclamez votre réduction</a>
+            <p class="footer">Offre valable pendant 7 jours. Des conditions s'appliquent.</p>
+            <p>Contactez-nous au +1 (888) 592-7276 pour toute demande spéciale.</p>
+        </div>
+
         </body>
         </html>
         `,

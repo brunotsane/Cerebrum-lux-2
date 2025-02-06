@@ -467,9 +467,20 @@ let isFrench = false;
         }
 
         function translateForm() {
-            isFrench = !isFrench;
-            document.getElementById("quizTitle").innerText = isFrench ? "Quiz du Mois de l'Histoire des Noirs" : "Black History Month Quiz";
-            document.querySelector(".quiz-button").innerText = isFrench ? "English Version" : "Version Française";
+            if (!isFrench) {
+                isFrench = !isFrench;
+                document.getElementById("quizTitle").innerText = isFrench ? "Quiz du Mois de l'Histoire des Noirs" : "Black History Month Quiz";
+                document.querySelector(".quiz-button").innerText = isFrench ? "English Version" : "Version Française";
+                document.getElementById("quizTitle").innerText = "Quiz du Mois de l'Histoire des Noirs";
+                document.getElementById("q1").innerHTML = "<strong>1. Qui a été le premier Afro-Américain à devenir président des États-Unis ?</strong>";
+                document.getElementById("q2").innerHTML = "<strong>2. Quel est le nom du célèbre discours prononcé par Martin Luther King Jr. en 1963 ?</strong>";
+                document.getElementById("q3").innerHTML = "<strong>3. Qui est la première femme afro-américaine à voyager dans l'espace ?</strong>";
+                document.getElementById("q4").innerHTML = "<strong>4. Quel abolitionniste a aidé à libérer des esclaves grâce au chemin de fer clandestin ?</strong>";
+                document.getElementById("q5").innerHTML = "<strong>5. En quelle année l'esclavage a-t-il officiellement pris fin aux États-Unis avec le 13ème amendement ?</strong>";
+                document.getElementById("emailLabel").innerHTML = "<strong>Votre Email :</strong>";
+            } else {
+                location.reload(); // Reload the page to reset language
+            }
         }
 
 // Immediately invoked function to set the theme on initial load
