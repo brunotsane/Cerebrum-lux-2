@@ -88,7 +88,7 @@ app.post('/quiz-completed', async (req, res) => {
         <body>
             <div class="container">
                 <h2>🎉 Congrats, ${name}! You Did It! 🎉</h2>
-                <p>Thanks for completing the quiz! As a reward, enjoy an exclusive <strong>25% discount</strong> on your next purchase.</p>
+                <p>Thanks for completing the quiz! As a reward, enjoy an exclusive <strong>35% discount</strong> on your next purchase.</p>
                 <p>You have been entered into a draw for a free website design!</p>
                 <p class="discount">Use Code: <strong>QUIZ25</strong></p>
                 <a href="https://www.cerebrumlux.com/pricing.html" class="btn">Claim Your Discount</a>
@@ -100,7 +100,7 @@ app.post('/quiz-completed', async (req, res) => {
 
         <div class="container">
             <h2>🎉 Félicitations! Vous l'avez fait ! 🎉</h2>
-            <p>Merci d'avoir complété le quiz ! En récompense, profitez d'une <strong>réduction exclusive de 25%</strong> sur votre prochain achat.</p>
+            <p>Merci d'avoir complété le quiz ! En récompense, profitez d'une <strong>réduction exclusive de 35%</strong> sur votre prochain achat.</p>
             <p>Vous avez été inscrit à un tirage au sort pour un design de site web gratuit !</p>
             <p class="discount">Utilisez le code : <strong>QUIZ25</strong></p>
             <a href="https://www.cerebrumlux.com/pricing.html" class="btn">Réclamez votre réduction</a>
