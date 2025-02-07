@@ -7,19 +7,30 @@ import OpenAI from 'openai';
 import nodemailer from 'nodemailer';
 
 const app = express();
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.use(cors());
 app.use(json());
 app.use(express.json());
 app.use(express.static('Public'));
 
-const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET } = process.env;
+const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET,OPENAI_API_KEY } = process.env;
 const stripe = new Stripe(STRIPE_SECRET);
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Create the Nodemailer transporter
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASS,
+    },
+    tls: {
+        rejectUnauthorized: false,
+    },
+});
 
 // ✅ Function 1: Send email when the user starts the quiz
 const sendStartQuizEmail = async (name, email, language) => {
@@ -407,18 +418,6 @@ const sendRegistrationEmail = async (name, email, packOption, campOption, commen
 };
 
 // Route to handle form submission
-
-// Create the Nodemailer transporter
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS,
-    },
-    tls: {
-        rejectUnauthorized: false,
-    },
-});
 
 // Function to send emails with consistent JSON response
 function sendEmail(mailOptions, res) {
