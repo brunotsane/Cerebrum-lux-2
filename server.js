@@ -3,9 +3,12 @@ import 'dotenv/config';
 import cors from 'cors';
 import Stripe from 'stripe';
 import bodyParser from 'body-parser';
+import OpenAI from 'openai';
 import nodemailer from 'nodemailer';
 
 const app = express();
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
 app.use(cors());
 app.use(json());
 app.use(express.json());
@@ -17,12 +20,139 @@ const stripe = new Stripe(STRIPE_SECRET);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
+// ✅ Function 1: Send email when the user starts the quiz
+const sendStartQuizEmail = async (name, email, language) => {
+    const isFrench = language === "french";
+
+    const mailOptions = {
+        from: '"Cerebrum Lux Inc." <support@cerebrumlux.com>',
+        to: email,
+        subject: isFrench ? "Merci d'avoir commencé le quiz ! 🎉" : "Thanks for starting the quiz! 🎉",
+        html: `
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+                .container { background: #fff; padding: 20px; border-radius: 8px; text-align: center; }
+                .btn { display: inline-block; background: #06418f; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>${isFrench ? "Bonjour" : "Hello"} ${name},</h2>
+                <p>${isFrench ? 
+                    "Merci d'avoir commencé le quiz ! Vous êtes en bonne voie pour obtenir une recommandation personnalisée pour votre site web." :
+                    "Thank you for starting the quiz! You're on your way to getting a personalized website recommendation."}
+                </p>
+                <p>🎁 ${isFrench ? 
+                    "**En bonus, vous recevrez une réduction de 25%** si vous terminez le quiz !" : 
+                    "**As a bonus, you'll receive a 25% discount** when you complete the quiz!"}
+                </p>
+                <p>${isFrench ? "Cliquez ci-dessous pour continuer votre quiz :" : "Click below to continue your quiz:"}</p>
+                <a href="https://www.cerebrumlux.com/" class="btn">${isFrench ? "Continuer le quiz" : "Continue Quiz"}</a>
+                <p>${isFrench ? "Bonne chance !" : "Good luck!"} 🎯</p>
+            </div>
+        </body>
+        </html>
+        `
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Start Quiz Email sent to ${email} in ${language}`);
+    } catch (error) {
+        console.error('Error sending start quiz email:', error);
+    }
+};
+
+
+// ✅ Function 2: Send email when the user completes the quiz
+const sendCompletionEmail = async (name, email, language) => {
+    const isFrench = language === "french";
+
+    const mailOptions = {
+        from: '"Cerebrum Lux Inc." <support@cerebrumlux.com>',
+        to: email,
+        subject: isFrench ? "🎉 Félicitations ! Profitez de 25% de réduction et d'une consultation gratuite !" : 
+                            "🎉 Congratulations! Enjoy 25% Off + Free Consultation!",
+        html: `
+        <html>
+        <head>
+            <style>
+                body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+                .container { background: #fff; padding: 20px; border-radius: 8px; text-align: center; }
+                .discount { font-size: 20px; font-weight: bold; color: #d9534f; }
+                .btn { display: inline-block; background: #06418f; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>${isFrench ? "🎉 Félicitations" : "🎉 Congratulations"}, ${name}!</h2>
+                <p>${isFrench ? 
+                    "Vous avez terminé le quiz et débloqué **une réduction de 25%** sur votre prochain achat." :
+                    "You've completed the quiz and unlocked **a 25% discount** on your next purchase."}
+                </p>
+                <p>${isFrench ? 
+                    "En plus, vous bénéficiez d'une **consultation gratuite** avec notre équipe d'experts en sites web !" :
+                    "Plus, you're getting a **FREE website consultation** with our expert team!"}
+                </p>
+                <p class="discount">${isFrench ? "Utilisez le code :" : "Use Code:"} <strong>QUIZ25</strong></p>
+                <a href="https://www.cerebrumlux.com/pricing.html" class="btn">${isFrench ? "Réclamez votre réduction" : "Claim Your Discount"}</a>
+                <p>${isFrench ? "Nous avons hâte de vous aider à créer votre site parfait !" : "We can't wait to help you build your perfect website!"}</p>
+            </div>
+        </body>
+        </html>
+        `
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`Completion Email sent to ${email} in ${language}`);
+    } catch (error) {
+        console.error('Error sending completion email:', error);
+    }
+};
+
+
+app.post('/quiz-completed', async (req, res) => {
+    const { name, email, language } = req.body;
+
+    if (!name || !email || !language) {
+        return res.status(400).json({ error: "Missing name, email, or language" });
+    }
+
+    try {
+        await sendCompletionEmail(name, email, language);
+        res.status(200).json({ message: "Completion email sent successfully!" });
+    } catch (error) {
+        console.error("Error sending completion email:", error);
+        res.status(500).json({ error: "Failed to send completion email." });
+    }
+});
+
+app.post('/start-quiz', async (req, res) => {
+    const { name, email, language } = req.body;
+
+    if (!name || !email || !language) {
+        return res.status(400).json({ error: "Missing name, email, or language" });
+    }
+
+    try {
+        await sendStartQuizEmail(name, email, language);
+        res.status(200).json({ message: "Start quiz email sent successfully!" });
+    } catch (error) {
+        console.error("Error sending start quiz email:", error);
+        res.status(500).json({ error: "Failed to send start quiz email." });
+    }
+});
+
 // Handle Stripe Checkout
 app.post('/create-checkout-session', async (req, res) => {
     const { name, email, packOption, campOption, comments } = req.body;
 
     const prices = {
-        pro: 150000, // $300 in cents
+        pro: 35000, // $300 in cents
         starter: 25000, // $200 in cents
     };
 
@@ -60,7 +190,7 @@ app.post('/create-checkout-session', async (req, res) => {
     }
 });
 
-app.post('/quiz-completed', async (req, res) => {
+app.post('/quiz-completed-afro', async (req, res) => {
     const { name, email } = req.body;
 
     if (!email) {
@@ -122,6 +252,50 @@ app.post('/quiz-completed', async (req, res) => {
         res.status(500).json({ error: 'Failed to send discount email' });
     }
 });
+
+// Route: Generate a website recommendation based on quiz answers
+app.post('/generate-recommendation', async (req, res) => {
+    const { language, ...formData } = req.body; // Extract language separately
+    console.log(req.body)
+
+    // Define English and French prompts
+    const englishPrompt = `
+    Based on the following user responses, recommend the most suitable type of website:
+    - ${JSON.stringify(formData, null, 2)}
+
+    Provide a professional and concise recommendation of the type of website the user needs, explaining why this website type is best.
+    Respond in English.
+    `;
+
+    const frenchPrompt = `
+    Sur la base des réponses suivantes de l'utilisateur, recommandez le type de site web le plus adapté :
+    - ${JSON.stringify(formData, null, 2)}
+
+    Fournissez une recommandation professionnelle et concise du type de site web dont l'utilisateur a besoin, en expliquant pourquoi ce type de site web est le meilleur.
+    Répondez en français.
+    `;
+
+    // Select the appropriate prompt based on the language
+    const prompt = language === "french" ? frenchPrompt : englishPrompt;
+    console.log(language)
+
+    try {
+        const aiResponse = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: prompt }],
+            max_tokens: 150,  // Increased token count for better responses
+        });
+
+        const recommendation = aiResponse.choices[0].message.content.trim();
+        res.json({ recommendation });
+    } catch (error) {
+        console.error("OpenAI API Error:", error);
+        res.status(500).json({ error: "Failed to generate recommendation." });
+    }
+});
+
+
+
 
 // Webhook Route (uses raw body for Stripe)
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {

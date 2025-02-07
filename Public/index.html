@@ -613,6 +613,131 @@
         <!-- End Go Top Section -->
 
 
+    <!-- Modal (Popup) -->
+    <!-- Modal (Popup) -->
+<div id="formModal" class="modal">
+    <div class="modal-content">
+        <span style="font-size: large;" class="close">&times;</span>
+
+        <!-- Fun Form Title -->
+        <h1 data-en="What Kind of Website is Right for You?" data-fr="Quel type de site web est fait pour vous?">
+            What Kind of Website is Right for You?
+        </h1>
+
+        <!-- Language Toggle -->
+        <button id="languageToggle" style="margin-bottom: 20px;" data-en="Je parle le français" data-fr="I speak English">Je parle le français</button>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Form Steps -->
+        <form id="websiteForm">
+            <!-- Step 0: Name & Email Collection -->
+            <div class="step active">
+                <h2 data-en="Enter Your Details" data-fr="Entrez vos informations">Enter Your Details</h2>
+                <label>
+                    <span data-en="Full Name" data-fr="Nom complet">Full Name</span>
+                    <input type="text" id="fullName" name="fullName" required>
+                </label>
+                <label>
+                    <span data-en="Email Address" data-fr="Adresse e-mail">Email Address</span>
+                    <input type="email" id="email-q" name="email" required>
+                </label>
+            </div>
+
+            <!-- Step 1: Purpose -->
+            <div class="step">
+                <h2 data-en="What is the main purpose of your website?" data-fr="Quel est l'objectif principal de votre site web?"></h2>
+                <label><input type="radio" name="purpose" value="Promote my business"> <span data-en="Promote my business" data-fr="Promouvoir mon entreprise"></span></label>
+                <label><input type="radio" name="purpose" value="Sell products"> <span data-en="Sell products" data-fr="Vendre des produits"></span></label>
+                <label><input type="radio" name="purpose" value="Showcase my work"> <span data-en="Showcase my work" data-fr="Présenter mon travail"></span></label>
+                <label><input type="radio" name="purpose" value="Share information"> <span data-en="Share information" data-fr="Partager des informations"></span></label>
+            </div>
+
+            <!-- Step 2: Target Audience -->
+            <div class="step">
+                <h2 data-en="Who is your target audience?" data-fr="Qui est votre public cible?"></h2>
+                <label><input type="radio" name="audience" value="Customers"> <span data-en="Customers" data-fr="Clients"></span></label>
+                <label><input type="radio" name="audience" value="Personal brand followers"> <span data-en="Personal brand followers" data-fr="Abonnés à ma marque personnelle"></span></label>
+                <label><input type="radio" name="audience" value="Readers"> <span data-en="Readers" data-fr="Lecteurs"></span></label>
+                <label><input type="radio" name="audience" value="Community"> <span data-en="Community" data-fr="Communauté"></span></label>
+            </div>
+
+            <!-- Step 3: Interaction -->
+            <div class="step">
+                <h2 data-en="How do you want people to interact with your website?" data-fr="Comment voulez-vous que les gens interagissent avec votre site web?"></h2>
+                <label><input type="radio" name="interaction" value="Contact me easily"> <span data-en="Contact me easily (contact form, email, etc.)" data-fr="Me contacter facilement (formulaire de contact, email, etc.)"></span></label>
+                <label><input type="radio" name="interaction" value="Buy products or services online"> <span data-en="Buy products or services online" data-fr="Acheter des produits ou services en ligne"></span></label>
+                <label><input type="radio" name="interaction" value="Book appointments or reservations"> <span data-en="Book appointments or reservations" data-fr="Prendre des rendez-vous ou des réservations"></span></label>
+                <label><input type="radio" name="interaction" value="Read and engage with my content"> <span data-en="Read and engage with my content (blog, news, etc.)" data-fr="Lire et interagir avec mon contenu (blog, actualités, etc.)"></span></label>
+                <label><input type="radio" name="interaction" value="Other"> <span data-en="Other (Specify)" data-fr="Autre (Précisez)"></span></label>
+            </div>
+
+            <!-- Step 4: Design Preference -->
+            <div class="step">
+                <h2 data-en="What kind of design appeals to you the most?" data-fr="Quel type de design vous attire le plus?"></h2>
+                <label><input type="radio" name="design" value="Simple and clean"> <span data-en="Simple and clean" data-fr="Simple et épuré"></span></label>
+                <label><input type="radio" name="design" value="Modern and stylish"> <span data-en="Modern and stylish" data-fr="Moderne et élégant"></span></label>
+                <label><input type="radio" name="design" value="Colorful and bold"> <span data-en="Colorful and bold" data-fr="Coloré et audacieux"></span></label>
+                <label><input type="radio" name="design" value="Professional and corporate"> <span data-en="Professional and corporate" data-fr="Professionnel et corporate"></span></label>
+                <label><input type="radio" name="design" value="Not sure"> <span data-en="Not sure, I need suggestions" data-fr="Je ne suis pas sûr, j'ai besoin de suggestions"></span></label>
+            </div>
+
+            <!-- Step 5: SEO -->
+            <div class="step">
+                <h2 data-en="Do you want your website to be found easily on Google?" data-fr="Voulez-vous que votre site web soit facilement trouvé sur Google?"></h2>
+                <label><input type="radio" name="seo" value="Yes"> <span data-en="Yes, I want it optimized for search engines (SEO)" data-fr="Oui, je veux qu'il soit optimisé pour les moteurs de recherche (SEO)"></span></label>
+                <label><input type="radio" name="seo" value="No"> <span data-en="No, I don’t need that" data-fr="Non, je n'en ai pas besoin"></span></label>
+            </div>
+
+            <!-- Step 6: Content Help -->
+            <div class="step">
+                <h2 data-en="Do you need help with content (text, images, videos, etc.)?" data-fr="Avez-vous besoin d'aide pour le contenu (texte, images, vidéos, etc.)?"></h2>
+                <label><input type="radio" name="content" value="Yes"> <span data-en="Yes, I need help creating content" data-fr="Oui, j'ai besoin d'aide pour créer du contenu"></span></label>
+                <label><input type="radio" name="content" value="No"> <span data-en="No, I already have everything" data-fr="Non, j'ai déjà tout"></span></label>
+            </div>
+
+            <!-- Step 7: Timeline -->
+            <div class="step">
+                <h2 data-en="How soon do you need your website?" data-fr="Quand avez-vous besoin de votre site web?"></h2>
+                <label><input type="radio" name="timeline" value="As soon as possible"> <span data-en="As soon as possible (1-2 weeks)" data-fr="Dès que possible (1-2 semaines)"></span></label>
+                <label><input type="radio" name="timeline" value="Within a month"> <span data-en="Within a month" data-fr="Dans un mois"></span></label>
+                <label><input type="radio" name="timeline" value="No rush"> <span data-en="No rush, I just want to explore options" data-fr="Pas de précipitation, je veux juste explorer les options"></span></label>
+            </div>
+
+             <!-- Step 8: SEO -->
+             <div class="step">
+                <h2 data-en="Do you want your website to be found easily on Google?" data-fr="Voulez-vous que votre site web soit facilement trouvé sur Google?"></h2>
+                <label><input type="radio" name="seo" value="Yes"> <span data-en="Yes, I want it optimized for search engines (SEO)" data-fr="Oui, je veux qu'il soit optimisé pour les moteurs de recherche (SEO)"></span></label>
+                <label><input type="radio" name="seo" value="No"> <span data-en="No, I don’t need that" data-fr="Non, je n'en ai pas besoin"></span></label>
+            </div>
+
+            <!-- Step 9: Content Help -->
+            <div class="step">
+                <h2 data-en="Do you need help with content (text, images, videos, etc.)?" data-fr="Avez-vous besoin d'aide pour le contenu (texte, images, vidéos, etc.)?"></h2>
+                <label><input type="radio" name="content" value="Yes"> <span data-en="Yes, I need help creating content" data-fr="Oui, j'ai besoin d'aide pour créer du contenu"></span></label>
+                <label><input type="radio" name="content" value="No"> <span data-en="No, I already have everything" data-fr="Non, j'ai déjà tout"></span></label>
+            </div>
+
+            <!-- Step 10: Timeline -->
+            <div class="step">
+                <h2 data-en="How soon do you need your website?" data-fr="Quand avez-vous besoin de votre site web?"></h2>
+                <label><input type="radio" name="timeline" value="As soon as possible"> <span data-en="As soon as possible (1-2 weeks)" data-fr="Dès que possible (1-2 semaines)"></span></label>
+                <label><input type="radio" name="timeline" value="Within a month"> <span data-en="Within a month" data-fr="Dans un mois"></span></label>
+                <label><input type="radio" name="timeline" value="No rush"> <span data-en="No rush, I just want to explore options" data-fr="Pas de précipitation, je veux juste explorer les options"></span></label>
+            </div>
+            <!-- Navigation Buttons -->
+            <div class="buttons">
+                <button type="button" id="prevBtn">Back</button>
+                <button type="button" id="nextBtn">Next</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
         <!-- jQuery Min JS -->
         <script src="assets/js/jquery.min.js"></script>
         <!-- Bootstrap Bundle Min JS -->

@@ -390,6 +390,206 @@ function toggleTheme() {
         setTheme('theme-dark');
     }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    let currentStep = 0;
+    const steps = document.querySelectorAll(".step");
+    const progressBar = document.getElementById("progressBar");
+    let isFrench = false;
+
+    // Automatically open the modal when the page loads
+    const modal = document.getElementById("formModal");
+    const closeModalBtn = document.querySelector(".close"); // Select close button
+    document.getElementById("formModal").style.display = "block";
+    let fullName_q = document.getElementById("fullName").value.trim();
+    let email_q = document.getElementById("email-q").value.trim();
+    let language_q = isFrench ? "french": "english";
+
+    // Function to show only the current step
+    function showStep(step) {
+        steps.forEach((s, index) => {
+            s.style.display = index === step ? "block" : "none";
+        });
+
+        progressBar.style.width = `${((step + 1) / steps.length) * 100}%`;
+
+        document.getElementById("prevBtn").style.display = step > 0 ? "inline-block" : "none";
+        document.getElementById("nextBtn").textContent =
+            step === steps.length - 1 ? (isFrench ? "Soumettre" : "Submit") : (isFrench ? "Suivant" : "Next");
+    }
+
+        // Close modal when clicking "×"
+        closeModalBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+            // Close modal when clicking outside of it
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // "Next" button event listener
+    document.getElementById("nextBtn").addEventListener("click", function () {
+        if (currentStep === 0) {
+            fullName_q = document.getElementById("fullName").value.trim();
+            email_q = document.getElementById("email-q").value.trim();
+            language_q = isFrench ? "french": "english";
+            if (fullName_q === "" || email_q === "") {
+                alert(isFrench ? "Veuillez entrer votre nom et votre adresse e-mail." : "Please enter your Name and Email.");
+                return;
+            }
+            document.querySelectorAll("[data-en]").forEach(element => {
+                element.textContent = isFrench ? element.getAttribute("data-fr") : element.getAttribute("data-en");
+            });
+
+            // Send the start quiz email
+            try {
+                fetch("/start-quiz", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: fullName_q, email: email_q, language: language_q })
+                });
+            } catch (error) {
+                console.error("Error sending start quiz email:", error);
+            }
+        }
+
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            showStep(currentStep);
+        } else {
+            generateRecommendation();
+        }
+    });
+
+    // "Back" button event listener
+    document.getElementById("prevBtn").addEventListener("click", function () {
+        if (currentStep > 0) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    });
+
+    // Function to generate website recommendation
+// Function to generate website recommendation with loading screen
+async function generateRecommendation() {
+    let formData = {};
+    
+    // Collect all selected radio inputs
+    document.querySelectorAll("input[type='radio']:checked").forEach(input => {
+        formData[input.name] = input.value;
+    });
+
+    // Collect all text inputs
+    document.querySelectorAll("input[type='text'], textarea").forEach(input => {
+        formData[input.name] = input.value.trim();
+    });
+
+    // Add language attribute to formData based on user selection
+    formData.language = isFrench ? "french" : "english";
+
+    // Show loading screen before sending the request
+    showLoading();
+
+    try {
+        const response = await fetch("/generate-recommendation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+        hideLoading();
+
+        if (data.recommendation) {
+            displayResults(data.recommendation);
+        }
+    } catch (error) {
+        hideLoading();
+        console.log(error);
+        displayResults(isFrench ? "Une erreur s'est produite. Veuillez réessayer." 
+            : "An error occurred. Please try again.");
+    }
+    sendCompletedEmail();
+    
+}
+
+function sendCompletedEmail() {
+            try {
+                fetch("/quiz-completed", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: fullName_q, email: email_q, language: language_q })
+                });
+            } catch (error) {
+                console.error("Error sending start quiz email:", error);
+            }
+}
+// Function to show loading screen
+function showLoading() {
+    const modalContent = document.querySelector(".modal-content");
+    modalContent.innerHTML = `
+        <div id="loadingScreen">
+            <h2>${isFrench ? "Génération en cours..." : "Generating recommendation..."}</h2>
+            <p>${isFrench ? "Veuillez patienter un instant." : "Please wait a moment."}</p>
+            <div class="spinner"></div>
+        </div>
+    `;
+}
+
+// Function to hide loading screen
+function hideLoading() {
+    const loadingScreen = document.getElementById("loadingScreen");
+    if (loadingScreen) {
+        loadingScreen.remove();
+    }
+}
+    
+    
+    // Function to show the results page
+    function displayResults(recommendation) {
+        document.querySelector(".modal-content").innerHTML = `
+            <h2>${isFrench ? "Nous vous recommandons" : "We Recommend"}</h2>
+            <p>${recommendation}</p>
+            <button id="contactExpert">${isFrench ? "Parler à un expert" : "Talk to an Expert"}</button>
+        `;
+    
+        document.getElementById("contactExpert").addEventListener("click", function () {
+            window.location.href = "index.html#contact"; // Change this to actual contact page
+            modal.style.display = "none";
+        });
+    }
+    
+
+    // Function to determine website type based on answers
+    function determineWebsiteType(formData) {
+        if (formData.purpose === "Sell products") {
+            return isFrench ? "Un site de commerce électronique." : "An E-commerce Website.";
+        } else if (formData.purpose === "Showcase my work") {
+            return isFrench ? "Un site de portfolio." : "A Portfolio Website.";
+        } else if (formData.purpose === "Promote my business") {
+            return isFrench ? "Un site d'entreprise professionnel." : "A Professional Business Website.";
+        } else if (formData.purpose === "Share information") {
+            return isFrench ? "Un site de blog ou d'actualités." : "A Blog or News Website.";
+        } else {
+            return isFrench ? "Un site web personnalisé selon vos besoins." : "A Custom Website tailored to your needs.";
+        }
+    }
+
+    // Language toggle functionality
+    document.getElementById("languageToggle").addEventListener("click", function () {
+        isFrench = !isFrench;
+        document.querySelectorAll("[data-en]").forEach(element => {
+            element.textContent = isFrench ? element.getAttribute("data-fr") : element.getAttribute("data-en");
+        });
+
+        showStep(currentStep);
+    });
+
+    // Show first step initially
+    showStep(currentStep);
+});
 
 // Immediately invoked function to set the theme on initial load
 (function () {
