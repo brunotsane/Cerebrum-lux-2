@@ -411,6 +411,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let email_q = document.getElementById("email-q").value.trim();
     let language_q = isFrench ? "french": "english";
 
+    if (window.location.href.includes("#contact")) {
+        modal.style.display = "none";
+    }
     // Function to show only the current step
     function showStep(step) {
         steps.forEach((s, index) => {

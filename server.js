@@ -17,6 +17,7 @@ app.use(express.static('Public'));
 const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET,OPENAI_API_KEY, AXIOS_TOKEN } = process.env;
 const stripe = new Stripe(STRIPE_SECRET);
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+let aiRec;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -105,6 +106,10 @@ const sendCompletionEmail = async (name, email, language) => {
                     "Vous avez terminé le quiz et débloqué **une réduction de 25%** sur votre prochain achat." :
                     "You've completed the quiz and unlocked **a 25% discount** on your next purchase."}
                 </p>
+                <p>=========================================</p>
+                <h3>✅ Recommendation ✅ </h3>
+                <p>${aiRec}</p>
+                <p>=========================================</p>
                 <p>${isFrench ? 
                     "En plus, vous bénéficiez d'une **consultation gratuite** avec notre équipe d'experts en sites web !" :
                     "Plus, you're getting a **FREE website consultation** with our expert team!"}
@@ -358,6 +363,7 @@ app.post('/generate-recommendation', async (req, res) => {
         });
 
         const recommendation = aiResponse.choices[0].message.content.trim();
+        aiRec = recommendation;
         res.json({ recommendation });
     } catch (error) {
         console.error("OpenAI API Error:", error);
