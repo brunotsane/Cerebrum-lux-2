@@ -3,6 +3,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import Stripe from 'stripe';
 import bodyParser from 'body-parser';
+import axios from 'axios';
 import OpenAI from 'openai';
 import nodemailer from 'nodemailer';
 
@@ -13,7 +14,7 @@ app.use(json());
 app.use(express.json());
 app.use(express.static('Public'));
 
-const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET,OPENAI_API_KEY } = process.env;
+const { EMAIL_USER, EMAIL_PASS, PORT, STRIPE_SECRET, WEBHOOK_SECRET,OPENAI_API_KEY, AXIOS_TOKEN } = process.env;
 const stripe = new Stripe(STRIPE_SECRET);
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
@@ -124,6 +125,59 @@ const sendCompletionEmail = async (name, email, language) => {
         console.error('Error sending completion email:', error);
     }
 };
+
+
+// ✅ Middleware to track visitors and send email
+app.get('/', async (req, res, next) => {
+    try {
+        let userIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        const userAgent = req.headers['user-agent'];
+        const timestamp = new Date().toISOString();
+
+        console.log(`Tracking visitor: IP=${userIP}, User-Agent=${userAgent}`);
+
+        // 🌍 Get location info using ipinfo.io
+        let country = "Unknown", city = "Unknown";
+
+        if (userIP !== '127.0.0.1' && userIP !== '::1') {  // Avoid tracking local testing
+            try {
+                console.log(`Fetching location for IP: ${userIP}`);
+                const { data } = await axios.get(`https://ipinfo.io/${userIP}/json?token=${AXIOS_TOKEN}`);
+                country = data.country || "Unknown";
+                city = data.city || "Unknown";
+                console.log(`Location fetched: ${country}, ${city}`);
+            } catch (error) {
+                console.error("IP lookup failed:", error.message);
+            }
+        }
+        else{
+            console.log(`Fetching location for IP: ${userIP}`);
+        }
+
+        // ✅ Email Visitor Info
+        const mailOptions = {
+            from: `"Website Tracker" <${EMAIL_USER}>`,
+            to: EMAIL_USER,  // Sends visitor info to the company
+            subject: `New Visitor Logged: ${userIP}`,
+            html: `
+                <h2>New Visitor on Your Website</h2>
+                <p><strong>IP Address:</strong> ${userIP}</p>
+                <p><strong>Country:</strong> ${country}</p>
+                <p><strong>City:</strong> ${city}</p>
+                <p><strong>Browser Info:</strong> ${userAgent}</p>
+                <p><strong>Time of Visit:</strong> ${timestamp}</p>
+            `,
+        };
+
+        console.log(`Sending email to: ${COMPANY_EMAIL}`);
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ Email Sent Successfully to ${COMPANY_EMAIL}`);
+
+    } catch (error) {
+        console.error("Error tracking visitor:", error);
+    }
+    next();
+});
 
 
 app.post('/quiz-completed', async (req, res) => {
