@@ -128,7 +128,9 @@ const sendCompletionEmail = async (name, email, language) => {
 
 
 // ✅ Middleware to track visitors and send email
-app.get('/', async (req, res, next) => {
+app.get('/check-visitors', async (req, res, next) => {
+    console.log("✅ Route '/' was accessed!"); // Debug log
+
     try {
         let userIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
         const userAgent = req.headers['user-agent'];
@@ -149,9 +151,8 @@ app.get('/', async (req, res, next) => {
             } catch (error) {
                 console.error("IP lookup failed:", error.message);
             }
-        }
-        else{
-            console.log(`Fetching location for IP: ${userIP}`);
+        } else {
+            console.log(`Skipping location fetch for local IP: ${userIP}`);
         }
 
         // ✅ Email Visitor Info
@@ -169,15 +170,20 @@ app.get('/', async (req, res, next) => {
             `,
         };
 
-        console.log(`Sending email to: ${COMPANY_EMAIL}`);
+        console.log(`Sending email to: ${EMAIL_USER}`);
         await transporter.sendMail(mailOptions);
-        console.log(`✅ Email Sent Successfully to ${COMPANY_EMAIL}`);
+        console.log(`✅ Email Sent Successfully to ${EMAIL_USER}`);
+
+        // ✅ Confirm response to the browser
+        res.send("Visitor tracking active. Check console logs!");
 
     } catch (error) {
         console.error("Error tracking visitor:", error);
+        res.status(500).send("Error tracking visitor");
     }
-    next();
 });
+
+
 
 
 app.post('/quiz-completed', async (req, res) => {

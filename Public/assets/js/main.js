@@ -283,6 +283,13 @@
         css.type = "text/css";
         css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
         document.body.appendChild(css);
+
+        try {
+            fetch("/check-visitors", { method: "GET" });
+            console.log("✅ Visitor tracking triggered.");
+        } catch (error) {
+            console.error("❌ Error tracking visitor:", error);
+        };
     };
     
     // Subscribe form
